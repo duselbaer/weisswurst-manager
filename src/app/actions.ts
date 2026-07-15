@@ -3,7 +3,7 @@
 import { db } from '@/db';
 import { appointments, orders, users as usersTable, appointmentItems, orderItems } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
-import { eq, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
 import { auth, signIn } from '@/auth';
 import bcrypt from 'bcryptjs';
