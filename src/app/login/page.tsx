@@ -27,35 +27,35 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 py-20 px-4">
-      <div className="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-xl border-t-8 border-blue-600">
-        <h1 className="text-3xl font-black text-blue-900 mb-2 text-center text-black">Anmelden 🍻</h1>
-        <p className="text-gray-500 text-center mb-8">Logge dich ein, um deine Termine zu sehen.</p>
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-20 px-4 transition-colors">
+      <div className="max-w-md mx-auto bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl border-t-8 border-blue-600 transition-colors">
+        <h1 className="text-3xl font-black text-blue-900 dark:text-blue-400 mb-2 text-center">Anmelden 🍻</h1>
+        <p className="text-gray-500 dark:text-gray-400 text-center mb-8">Logge dich ein, um deine Termine zu sehen.</p>
         
         {error && (
-          <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-6 text-sm font-bold text-center">
+          <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-lg mb-6 text-sm font-bold text-center border border-red-100 dark:border-red-900/30">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-gray-500 uppercase">E-Mail</label>
+            <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">E-Mail</label>
             <input
               type="email"
               name="email"
               required
-              className="border-2 p-3 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none text-black"
+              className="border-2 dark:border-slate-800 p-3 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 transition-colors"
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-gray-500 uppercase">Passwort</label>
+            <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Passwort</label>
             <input
               type="password"
               name="password"
               required
-              className="border-2 p-3 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none text-black"
+              className="border-2 dark:border-slate-800 p-3 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 transition-colors"
             />
           </div>
 
@@ -67,9 +67,9 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center mt-6 text-sm text-gray-600">
+        <p className="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
           Noch kein Konto?{' '}
-          <Link href="/register" className="text-blue-600 font-bold hover:underline">
+          <Link href="/register" className="text-blue-600 dark:text-blue-400 font-bold hover:underline">
             Jetzt registrieren
           </Link>
         </p>

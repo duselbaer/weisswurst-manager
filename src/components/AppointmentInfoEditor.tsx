@@ -9,16 +9,16 @@ export default function AppointmentInfoEditor({ appointment }: { appointment: Ap
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-md border-2 border-blue-100">
+    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-md border-2 border-blue-100 dark:border-blue-900/30 transition-colors">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full text-lg font-bold text-gray-800"
+        className="flex items-center justify-between w-full text-lg font-bold text-gray-800 dark:text-gray-100"
       >
         <div className="flex items-center gap-2">
-          <Settings className="w-5 h-5 text-blue-600" />
+          <Settings className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           Termin bearbeiten
         </div>
-        <span className="text-blue-600 text-sm font-normal underline">
+        <span className="text-blue-600 dark:text-blue-400 text-sm font-normal underline">
           {isOpen ? 'Schließen' : 'Bearbeiten'}
         </span>
       </button>
@@ -35,24 +35,24 @@ export default function AppointmentInfoEditor({ appointment }: { appointment: Ap
           <input type="hidden" name="slug" value={appointment.slug} />
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-gray-500 uppercase">Anlass / Titel</label>
+            <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Anlass / Titel</label>
             <input
               type="text"
               name="title"
               defaultValue={appointment.title}
               required
-              className="border-2 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black"
+              className="border-2 dark:border-slate-800 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 transition-colors"
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-gray-500 uppercase">Datum & Uhrzeit</label>
+            <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Datum & Uhrzeit</label>
             <input
               type="datetime-local"
               name="date"
               defaultValue={appointment.date}
               required
-              className="border-2 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black"
+              className="border-2 dark:border-slate-800 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 transition-colors"
             />
           </div>
 

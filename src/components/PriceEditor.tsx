@@ -9,16 +9,16 @@ export default function PriceEditor({ appointment }: { appointment: Appointment 
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-md border-2 border-blue-100">
+    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-md border-2 border-blue-100 dark:border-blue-900/30 transition-colors">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full text-lg font-bold text-gray-800"
+        className="flex items-center justify-between w-full text-lg font-bold text-gray-800 dark:text-gray-100"
       >
         <div className="flex items-center gap-2">
-          <Euro className="w-5 h-5 text-blue-600" />
+          <Euro className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           Preise festlegen
         </div>
-        <span className="text-blue-600 text-sm font-normal underline">
+        <span className="text-blue-600 dark:text-blue-400 text-sm font-normal underline">
           {isOpen ? 'Schließen' : 'Bearbeiten'}
         </span>
       </button>
@@ -37,7 +37,7 @@ export default function PriceEditor({ appointment }: { appointment: Appointment 
             {appointment.items.map((item) => (
               <div key={item.id} className="flex flex-col gap-1">
                 <div className="flex justify-between items-center">
-                  <label className="text-xs font-bold text-gray-500 uppercase truncate pr-2">{item.name}</label>
+                  <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase truncate pr-2">{item.name}</label>
                   <button
                     type="button"
                     onClick={async () => {
@@ -45,7 +45,7 @@ export default function PriceEditor({ appointment }: { appointment: Appointment 
                         await removeCustomItem(item.id, appointment.slug);
                       }
                     }}
-                    className="text-gray-300 hover:text-red-500 transition-colors"
+                    className="text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors"
                   >
                     <Trash2 className="w-3 h-3" />
                   </button>
@@ -57,9 +57,9 @@ export default function PriceEditor({ appointment }: { appointment: Appointment 
                     inputMode="decimal"
                     name={`price_${item.id}`}
                     defaultValue={(item.unitPriceCents / 100).toFixed(2)}
-                    className="w-full border-2 p-2 pr-8 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-black text-right"
+                    className="w-full border-2 dark:border-slate-800 p-2 pr-8 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-black dark:text-white dark:bg-slate-800 text-right transition-colors"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm">€</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 pointer-events-none text-sm">€</span>
                 </div>
               </div>
             ))}

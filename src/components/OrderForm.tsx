@@ -21,8 +21,8 @@ export default function OrderForm({ appointment }: { appointment: Appointment })
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md border-2 border-blue-100 space-y-6">
-      <h3 className="text-xl font-bold text-gray-800">Ich bin dabei! 🥨</h3>
+    <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-md border-2 border-blue-100 dark:border-blue-900/30 space-y-6 transition-colors">
+      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">Ich bin dabei! 🥨</h3>
       
       <form
         ref={formRef}
@@ -36,21 +36,21 @@ export default function OrderForm({ appointment }: { appointment: Appointment })
         <input type="hidden" name="slug" value={appointment.slug} />
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="userName" className="text-sm font-semibold text-gray-600">Dein Name</label>
+          <label htmlFor="userName" className="text-sm font-semibold text-gray-600 dark:text-gray-400">Dein Name</label>
           <input
             type="text"
             name="userName"
             id="userName"
             placeholder="z.B. Maxi"
             required
-            className="border p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black"
+            className="border dark:border-slate-800 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 transition-colors"
           />
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
           {appointment.items.map((item) => (
-            <div key={item.id} className="flex flex-col gap-1 p-2 bg-slate-50 rounded-lg border border-slate-100">
-              <label htmlFor={`item_${item.id}`} className="text-[10px] font-bold text-gray-500 uppercase truncate">
+            <div key={item.id} className="flex flex-col gap-1 p-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800 transition-colors">
+              <label htmlFor={`item_${item.id}`} className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase truncate">
                 {item.name} ({formatPrice(item.unitPriceCents)})
               </label>
               <input
@@ -59,7 +59,7 @@ export default function OrderForm({ appointment }: { appointment: Appointment })
                 id={`item_${item.id}`}
                 min="0"
                 defaultValue="0"
-                className="border p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black text-right"
+                className="border dark:border-slate-800 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 text-right transition-colors"
               />
             </div>
           ))}
@@ -73,19 +73,19 @@ export default function OrderForm({ appointment }: { appointment: Appointment })
         </button>
       </form>
 
-      <div className="pt-4 border-t border-dashed border-gray-200">
-        <label className="text-[10px] font-bold text-gray-500 uppercase mb-2 block">Fehlt etwas? (z.B. Senf, Obazda...)</label>
+      <div className="pt-4 border-t border-dashed border-gray-200 dark:border-slate-800">
+        <label className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase mb-2 block">Fehlt etwas? (z.B. Senf, Obazda...)</label>
         <div className="flex gap-2">
           <input
             type="text"
             value={newItemName}
             onChange={(e) => setNewItemName(e.target.value)}
             placeholder="Neuer Artikel..."
-            className="flex-1 border p-2 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 text-black"
+            className="flex-1 border dark:border-slate-800 p-2 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white dark:bg-slate-800 transition-colors"
           />
           <button
             onClick={handleAddCustom}
-            className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-lg transition-colors"
+            className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 p-2 rounded-lg transition-colors"
             title="Artikel hinzufügen"
           >
             <Plus className="w-5 h-5" />
