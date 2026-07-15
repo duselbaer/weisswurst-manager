@@ -35,7 +35,7 @@ export default function AppointmentOverview({
 
   if (filtered.length === 0) {
     return (
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl text-center border-2 border-dashed border-gray-200 dark:border-slate-800 transition-colors">
+      <div className="bg-card p-6 rounded-2xl text-center border-2 border-dashed border-border transition-colors">
         <p className="text-gray-400 dark:text-gray-500 italic text-sm">
           {type === 'future' && 'Keine anstehenden Termine.'}
           {type === 'past' && 'Keine offenen Abrechnungen.'}
@@ -53,11 +53,11 @@ export default function AppointmentOverview({
         const formattedTime = dateObj.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
 
         return (
-          <div key={apt.id} className={`group bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 hover:shadow-md transition-all overflow-hidden flex flex-col ${apt.isDone ? 'opacity-75' : ''}`}>
+          <div key={apt.id} className={`group bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-all overflow-hidden flex flex-col ${apt.isDone ? 'opacity-75' : ''}`}>
             <div className="p-4 flex-1">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-lg font-bold text-blue-900 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-blue-900 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors flex items-center gap-2 text-foreground">
                     {apt.title}
                     {apt.isDone === 1 && <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] px-2 py-0.5 rounded-full font-black uppercase">Erledigt</span>}
                   </h3>

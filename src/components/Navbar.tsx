@@ -7,7 +7,7 @@ export default async function Navbar() {
   const session = await auth();
 
   return (
-    <nav className="bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 shadow-sm sticky top-0 z-50 transition-colors">
+    <nav className="bg-card border-b border-border shadow-sm sticky top-0 z-50 transition-colors">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="text-xl font-black text-blue-900 dark:text-blue-400 flex items-center gap-2">
           <span>🥨</span>
@@ -18,7 +18,7 @@ export default async function Navbar() {
           <ThemeToggle />
           {session?.user ? (
             <>
-              <div className="flex items-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-slate-800 px-3 py-1.5 rounded-full">
+              <div className="flex items-center gap-2 text-sm font-bold text-card-foreground bg-background px-3 py-1.5 rounded-full">
                 <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span className="hidden sm:inline">{session.user.name || session.user.email}</span>
               </div>

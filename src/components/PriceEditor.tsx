@@ -9,10 +9,10 @@ export default function PriceEditor({ appointment }: { appointment: Appointment 
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-md border-2 border-blue-100 dark:border-blue-900/30 transition-colors">
+    <div className="bg-card p-6 rounded-2xl shadow-md border-2 border-blue-100 dark:border-blue-900/30 transition-colors">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full text-lg font-bold text-gray-800 dark:text-gray-100"
+        className="flex items-center justify-between w-full text-lg font-bold text-foreground"
       >
         <div className="flex items-center gap-2">
           <Euro className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -57,7 +57,7 @@ export default function PriceEditor({ appointment }: { appointment: Appointment 
                     inputMode="decimal"
                     name={`price_${item.id}`}
                     defaultValue={(item.unitPriceCents / 100).toFixed(2)}
-                    className="w-full border-2 dark:border-slate-800 p-2 pr-8 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-black dark:text-white dark:bg-slate-800 text-right transition-colors"
+                    className="w-full border-2 border-border p-2 pr-8 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-foreground bg-background text-right transition-colors"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 pointer-events-none text-sm">€</span>
                 </div>

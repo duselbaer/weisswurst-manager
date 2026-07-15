@@ -11,7 +11,7 @@ export default async function Home() {
   const serverNow = new Date().toISOString();
 
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-10 px-4 transition-colors">
+    <main className="min-h-screen py-10 px-4 transition-colors">
       <div className="max-w-4xl mx-auto space-y-10">
         <header className="text-center">
           <h1 className="text-5xl font-extrabold text-blue-900 dark:text-blue-400 mb-4">🥨 Weißwurst-Manager</h1>
@@ -19,8 +19,8 @@ export default async function Home() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
-          <section className="lg:col-span-2 bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl border-t-8 border-blue-600 transition-colors">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100 text-center">Neues Frühstück erstellen</h2>
+          <section className="lg:col-span-2 bg-card p-8 rounded-2xl shadow-xl border-t-8 border-blue-600 transition-colors">
+            <h2 className="text-2xl font-bold mb-6 text-foreground text-center">Neues Frühstück erstellen</h2>
             <form action={createAppointment} className="space-y-6">
               <div className="flex flex-col gap-2">
                 <label htmlFor="title" className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Was ist der Anlass?</label>
@@ -30,7 +30,7 @@ export default async function Home() {
                   id="title"
                   placeholder="z.B. Weißwurst-Donnerstag"
                   required
-                  className="border-2 dark:border-slate-800 p-3 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-500 outline-none transition-all text-lg text-black dark:text-white dark:bg-slate-800"
+                  className="border-2 border-border p-3 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-500 outline-none transition-all text-lg text-foreground bg-background"
                 />
               </div>
 
@@ -41,7 +41,7 @@ export default async function Home() {
                   name="date"
                   id="date"
                   required
-                  className="border-2 dark:border-slate-800 p-3 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-500 outline-none transition-all text-lg text-black dark:text-white dark:bg-slate-800"
+                  className="border-2 border-border p-3 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-500 outline-none transition-all text-lg text-foreground bg-background"
                 />
               </div>
 
@@ -56,7 +56,7 @@ export default async function Home() {
 
           <section className="lg:col-span-3 space-y-8">
             {!session ? (
-              <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl border-l-8 border-blue-600 transition-colors">
+              <div className="bg-card p-8 rounded-2xl shadow-xl border-l-8 border-blue-600 transition-colors">
                 <h2 className="text-2xl font-black text-blue-900 dark:text-blue-400 mb-4">Servus! 🥨</h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
                   Mit dem <strong>Weißwurst-Manager</strong> planst du das perfekte bayerische Frühstück. 

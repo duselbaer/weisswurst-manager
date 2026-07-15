@@ -9,10 +9,10 @@ export default function AppointmentInfoEditor({ appointment }: { appointment: Ap
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-md border-2 border-blue-100 dark:border-blue-900/30 transition-colors">
+    <div className="bg-card p-6 rounded-2xl shadow-md border-2 border-blue-100 dark:border-blue-900/30 transition-colors">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full text-lg font-bold text-gray-800 dark:text-gray-100"
+        className="flex items-center justify-between w-full text-lg font-bold text-foreground"
       >
         <div className="flex items-center gap-2">
           <Settings className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -41,7 +41,7 @@ export default function AppointmentInfoEditor({ appointment }: { appointment: Ap
               name="title"
               defaultValue={appointment.title}
               required
-              className="border-2 dark:border-slate-800 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 transition-colors"
+              className="border-2 border-border p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-foreground bg-background transition-colors"
             />
           </div>
 
@@ -52,7 +52,7 @@ export default function AppointmentInfoEditor({ appointment }: { appointment: Ap
               name="date"
               defaultValue={appointment.date}
               required
-              className="border-2 dark:border-slate-800 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 transition-colors"
+              className="border-2 border-border p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-foreground bg-background transition-colors"
             />
           </div>
 

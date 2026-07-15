@@ -27,8 +27,8 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-20 px-4 transition-colors">
-      <div className="max-w-md mx-auto bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl border-t-8 border-blue-600 transition-colors">
+    <main className="min-h-screen py-20 px-4 transition-colors">
+      <div className="max-w-md mx-auto bg-card p-8 rounded-2xl shadow-xl border-t-8 border-blue-600 transition-colors">
         <h1 className="text-3xl font-black text-blue-900 dark:text-blue-400 mb-2 text-center">Anmelden 🍻</h1>
         <p className="text-gray-500 dark:text-gray-400 text-center mb-8">Logge dich ein, um deine Termine zu sehen.</p>
         
@@ -45,7 +45,7 @@ export default function LoginPage() {
               type="email"
               name="email"
               required
-              className="border-2 dark:border-slate-800 p-3 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 transition-colors"
+              className="border-2 border-border p-3 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-500 outline-none text-foreground bg-background transition-colors"
             />
           </div>
 
@@ -55,7 +55,7 @@ export default function LoginPage() {
               type="password"
               name="password"
               required
-              className="border-2 dark:border-slate-800 p-3 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 transition-colors"
+              className="border-2 border-border p-3 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-500 outline-none text-foreground bg-background transition-colors"
             />
           </div>
 

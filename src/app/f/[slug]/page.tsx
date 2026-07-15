@@ -56,7 +56,7 @@ export default async function AppointmentPage({ params }: { params: Promise<{ sl
   const formattedTime = dateObj.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
 
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-10 px-4 transition-colors">
+    <main className="min-h-screen py-10 px-4 transition-colors">
       <div className="max-w-6xl mx-auto space-y-8">
         <Link href="/" className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold hover:underline mb-4 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Zur Übersicht
@@ -84,7 +84,7 @@ export default async function AppointmentPage({ params }: { params: Promise<{ sl
             <AppointmentInfoEditor appointment={appointment} />
             <PriceEditor appointment={appointment} />
 
-            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-md border-2 border-amber-100 dark:border-amber-900/30 transition-colors">
+            <div className="bg-card p-6 rounded-2xl shadow-md border-2 border-amber-100 dark:border-amber-900/30 transition-colors">
               <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-amber-900 dark:text-amber-400">
                 <ShoppingCart className="w-5 h-5" /> Einkaufsliste
               </h3>
@@ -92,14 +92,14 @@ export default async function AppointmentPage({ params }: { params: Promise<{ sl
                 {itemTotals.map((item) => (
                   <div key={item.id} className="flex justify-between items-center p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg transition-colors">
                     <span className="font-medium text-amber-800 dark:text-amber-200 text-sm">{item.name}</span>
-                    <span className="font-bold text-lg text-gray-800 dark:text-gray-100">{item.totalCount}</span>
+                    <span className="font-bold text-lg text-foreground">{item.totalCount}</span>
                   </div>
                 ))}
                 
                 <div className="pt-4 border-t-2 border-dashed border-amber-200 dark:border-amber-900/30 mt-4 space-y-2">
                   <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
                     <span>Gesamt:</span>
-                    <span className="font-bold text-gray-700 dark:text-gray-200">{formatEuro(totalCostCents)}</span>
+                    <span className="font-bold text-foreground">{formatEuro(totalCostCents)}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm text-green-600 dark:text-green-400">
                     <span className="flex items-center gap-1"><Wallet className="w-3 h-3" /> Gezahlt:</span>
@@ -121,12 +121,12 @@ export default async function AppointmentPage({ params }: { params: Promise<{ sl
 
           {/* Main: Participant List */}
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+            <h3 className="text-2xl font-bold text-foreground flex items-center gap-2">
               <Users className="w-6 h-6" /> Wer ist dabei? ({appointment.orders.length})
             </h3>
             
             {appointment.orders.length === 0 ? (
-              <div className="bg-white dark:bg-slate-900 p-12 rounded-2xl text-center border-2 border-dashed border-gray-200 dark:border-slate-800 transition-colors">
+              <div className="bg-card p-12 rounded-2xl text-center border-2 border-dashed border-border transition-colors">
                 <p className="text-gray-400 dark:text-gray-500 text-lg italic">Noch keine Bestellungen... sei der Erste!</p>
               </div>
             ) : (
@@ -138,17 +138,17 @@ export default async function AppointmentPage({ params }: { params: Promise<{ sl
                   }, 0);
 
                   return (
-                    <div key={order.id} className={`bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border flex justify-between items-center hover:shadow-md transition-all ${order.hasPaid ? 'border-green-200 dark:border-green-900/30 bg-green-50/20 dark:bg-green-900/10' : 'border-gray-100 dark:border-slate-800'}`}>
+                    <div key={order.id} className={`bg-card p-4 rounded-xl shadow-sm border flex justify-between items-center hover:shadow-md transition-all ${order.hasPaid ? 'border-green-200 dark:border-green-900/30 bg-green-50/20 dark:bg-green-900/10' : 'border-border'}`}>
                       <div className="flex items-center gap-4">
                         <TogglePaidButton id={order.id} hasPaid={order.hasPaid === 1} slug={slug} disabled={!pricesSet} />
                         <div>
-                          <span className={`font-bold text-lg ${order.hasPaid ? 'text-green-800 dark:text-green-400' : 'text-gray-800 dark:text-gray-200'}`}>{order.userName}</span>
+                          <span className={`font-bold text-lg ${order.hasPaid ? 'text-green-800 dark:text-green-400' : 'text-foreground'}`}>{order.userName}</span>
                           <div className="flex flex-wrap gap-2 mt-1">
                             {order.items.map(oi => {
                               const item = appointment.items.find(i => i.id === oi.itemId);
                               if (!item || oi.count === 0) return null;
                               return (
-                                <span key={oi.id} className="text-[10px] bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded text-slate-700 dark:text-slate-300 border border-slate-100 dark:border-slate-700">
+                                <span key={oi.id} className="text-[10px] bg-background px-2 py-0.5 rounded text-foreground/70 border border-border">
                                   {item.name}: {oi.count}
                                 </span>
                               );

@@ -21,8 +21,8 @@ export default function OrderForm({ appointment }: { appointment: Appointment })
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-md border-2 border-blue-100 dark:border-blue-900/30 space-y-6 transition-colors">
-      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">Ich bin dabei! 🥨</h3>
+    <div className="bg-card p-6 rounded-xl shadow-md border-2 border-blue-100 dark:border-blue-900/30 space-y-6 transition-colors">
+      <h3 className="text-xl font-bold text-foreground">Ich bin dabei! 🥨</h3>
       
       <form
         ref={formRef}
@@ -43,13 +43,13 @@ export default function OrderForm({ appointment }: { appointment: Appointment })
             id="userName"
             placeholder="z.B. Maxi"
             required
-            className="border dark:border-slate-800 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 transition-colors"
+            className="border border-border p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-foreground bg-background transition-colors"
           />
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
           {appointment.items.map((item) => (
-            <div key={item.id} className="flex flex-col gap-1 p-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800 transition-colors">
+            <div key={item.id} className="flex flex-col gap-1 p-2 bg-background/50 rounded-lg border border-border transition-colors">
               <label htmlFor={`item_${item.id}`} className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase truncate">
                 {item.name} ({formatPrice(item.unitPriceCents)})
               </label>
@@ -59,7 +59,7 @@ export default function OrderForm({ appointment }: { appointment: Appointment })
                 id={`item_${item.id}`}
                 min="0"
                 defaultValue="0"
-                className="border dark:border-slate-800 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black dark:text-white dark:bg-slate-800 text-right transition-colors"
+                className="border border-border p-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-foreground bg-background text-right transition-colors"
               />
             </div>
           ))}
