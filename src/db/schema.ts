@@ -59,36 +59,63 @@ export const appointments = sqliteTable('appointments', {
   title: text('title').notNull(),
   date: text('date').notNull(),
   slug: text('slug').notNull().unique(),
-  priceBreze: integer('price_breze').notNull().default(0),
-  priceWeisswurst: integer('price_weisswurst').notNull().default(0),
-  priceWiener: integer('price_wiener').notNull().default(0),
-  priceWeissbier: integer('price_weissbier').notNull().default(0),
   isDone: integer('is_done').notNull().default(0),
+});
+
+export const appointmentItems = sqliteTable('appointment_items', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  appointmentId: integer('appointment_id').notNull().references(() => appointments.id, { onDelete: 'cascade' }),
+  name: text('name').notNull(),
+  unitPriceCents: integer('unit_price_cents').notNull().default(0),
+});
+
+export const orders = sqliteTable('orders', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  appointmentId: integer('appointment_id').notNull().references(() => appointments.id, { onDelete: 'cascade' }),
+  userName: text('user_name').notNull(),
+  hasPaid: integer('has_paid').notNull().default(0),
+});
+
+export const orderItems = sqliteTable('order_items', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  orderId: integer('order_id').notNull().references(() => orders.id, { onDelete: 'cascade' }),
+  itemId: integer('item_id').notNull().references(() => appointmentItems.id, { onDelete: 'cascade' }),
+  count: integer('count').notNull().default(0),
 });
 
 export const appointmentsRelations = relations(appointments, ({ many, one }) => ({
   orders: many(orders),
+  items: many(appointmentItems),
   user: one(users, {
     fields: [appointments.userId],
     references: [users.id],
   }),
 }));
 
-export const orders = sqliteTable('orders', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  appointmentId: integer('appointment_id').notNull().references(() => appointments.id, { onDelete: 'cascade' }),
-  userName: text('user_name').notNull(),
-  brezenCount: integer('brezen_count').notNull().default(0),
-  weisswurstCount: integer('weisswurst_count').notNull().default(0),
-  wienerCount: integer('wiener_count').notNull().default(0),
-  weissbierCount: integer('weissbier_count').notNull().default(0),
-  hasPaid: integer('has_paid').notNull().default(0),
-});
+export const appointmentItemsRelations = relations(appointmentItems, ({ one, many }) => ({
+  appointment: one(appointments, {
+    fields: [appointmentItems.appointmentId],
+    references: [appointments.id],
+  }),
+  orderEntries: many(orderItems),
+}));
 
-export const ordersRelations = relations(orders, ({ one }) => ({
+export const ordersRelations = relations(orders, ({ one, many }) => ({
   appointment: one(appointments, {
     fields: [orders.appointmentId],
     references: [appointments.id],
+  }),
+  items: many(orderItems),
+}));
+
+export const orderItemsRelations = relations(orderItems, ({ one }) => ({
+  order: one(orders, {
+    fields: [orderItems.orderId],
+    references: [orders.id],
+  }),
+  item: one(appointmentItems, {
+    fields: [orderItems.itemId],
+    references: [appointmentItems.id],
   }),
 }));
 
@@ -96,8 +123,13 @@ export const usersRelations = relations(users, ({ many }) => ({
   appointments: many(appointments),
 }));
 
-export type Appointment = typeof appointments.$inferSelect;
-export type NewAppointment = typeof appointments.$inferInsert;
+export type Appointment = typeof appointments.$inferSelect & {
+  items: AppointmentItem[];
+  orders: (typeof orders.$inferSelect & {
+    items: OrderItem[];
+  })[];
+};
+export type AppointmentItem = typeof appointmentItems.$inferSelect;
 export type Order = typeof orders.$inferSelect;
-export type NewOrder = typeof orders.$inferInsert;
+export type OrderItem = typeof orderItems.$inferSelect;
 export type User = typeof users.$inferSelect;

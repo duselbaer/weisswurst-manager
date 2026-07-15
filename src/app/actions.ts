@@ -1,9 +1,9 @@
 'use server';
 
 import { db } from '@/db';
-import { appointments, orders, users as usersTable } from '@/db/schema';
+import { appointments, orders, users as usersTable, appointmentItems, orderItems } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
 import { auth, signIn } from '@/auth';
 import bcrypt from 'bcryptjs';
@@ -37,7 +37,6 @@ export async function registerUser(formData: FormData) {
     if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
       throw error;
     }
-    // If it's not a redirect, it might be an auth error
     return { error: 'Registrierung erfolgreich, aber Anmeldung fehlgeschlagen. Bitte manuell einloggen.' };
   }
 }
@@ -47,11 +46,11 @@ function slugify(text: string) {
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-')     // Replace spaces with -
-    .replace(/[^\w-]+/g, '')  // Remove all non-word chars
-    .replace(/--+/g, '-')     // Replace multiple - with single -
-    .replace(/^-+/, '')       // Trim - from start of text
-    .replace(/-+$/, '');      // Trim - from end of text
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
 }
 
 export async function createAppointment(formData: FormData) {
@@ -62,7 +61,6 @@ export async function createAppointment(formData: FormData) {
   let slug = slugify(title);
   if (!slug) slug = 'fruehstueck';
   
-  // Check if slug exists, if so append random string
   const existing = await db.query.appointments.findFirst({
     where: eq(appointments.slug, slug),
   });
@@ -71,12 +69,21 @@ export async function createAppointment(formData: FormData) {
     slug = `${slug}-${Math.random().toString(36).substring(2, 7)}`;
   }
 
-  await db.insert(appointments).values({
+  const [newAppointment] = await db.insert(appointments).values({
     title,
     date,
     slug,
     userId: session?.user?.id || null,
-  });
+  }).returning();
+
+  // Add default items
+  const defaultItems = ['Brezen', 'Weißwurst', 'Wiener', 'Weißbier'];
+  for (const name of defaultItems) {
+    await db.insert(appointmentItems).values({
+      appointmentId: newAppointment.id,
+      name,
+    });
+  }
 
   redirect(`/f/${slug}`);
 }
@@ -84,20 +91,27 @@ export async function createAppointment(formData: FormData) {
 export async function addOrder(formData: FormData) {
   const appointmentId = parseInt(formData.get('appointmentId') as string);
   const userName = formData.get('userName') as string;
-  const brezenCount = parseInt(formData.get('brezenCount') as string) || 0;
-  const weisswurstCount = parseInt(formData.get('weisswurstCount') as string) || 0;
-  const wienerCount = parseInt(formData.get('wienerCount') as string) || 0;
-  const weissbierCount = parseInt(formData.get('weissbierCount') as string) || 0;
   const slug = formData.get('slug') as string;
 
-  await db.insert(orders).values({
+  const [newOrder] = await db.insert(orders).values({
     appointmentId,
     userName,
-    brezenCount,
-    weisswurstCount,
-    wienerCount,
-    weissbierCount,
-  });
+  }).returning();
+
+  // Process all item counts from formData
+  for (const [key, value] of formData.entries()) {
+    if (key.startsWith('item_')) {
+      const itemId = parseInt(key.replace('item_', ''));
+      const count = parseInt(value as string) || 0;
+      if (count > 0) {
+        await db.insert(orderItems).values({
+          orderId: newOrder.id,
+          itemId,
+          count,
+        });
+      }
+    }
+  }
 
   revalidatePath(`/f/${slug}`);
 }
@@ -131,20 +145,37 @@ export async function toggleAppointmentStatus(id: number, isDone: boolean, slug:
 }
 
 export async function updateAppointmentPrices(formData: FormData) {
-  const id = parseInt(formData.get('id') as string);
   const slug = formData.get('slug') as string;
   
-  const priceBreze = Math.round(parseFloat((formData.get('priceBreze') as string).replace(',', '.')) * 100) || 0;
-  const priceWeisswurst = Math.round(parseFloat((formData.get('priceWeisswurst') as string).replace(',', '.')) * 100) || 0;
-  const priceWiener = Math.round(parseFloat((formData.get('priceWiener') as string).replace(',', '.')) * 100) || 0;
-  const priceWeissbier = Math.round(parseFloat((formData.get('priceWeissbier') as string).replace(',', '.')) * 100) || 0;
-
-  await db.update(appointments)
-    .set({ priceBreze, priceWeisswurst, priceWiener, priceWeissbier })
-    .where(eq(appointments.id, id));
+  for (const [key, value] of formData.entries()) {
+    if (key.startsWith('price_')) {
+      const itemId = parseInt(key.replace('price_', ''));
+      const unitPriceCents = Math.round(parseFloat((value as string).replace(',', '.')) * 100) || 0;
+      
+      await db.update(appointmentItems)
+        .set({ unitPriceCents })
+        .where(eq(appointmentItems.id, itemId));
+    }
+  }
 
   revalidatePath(`/f/${slug}`);
   revalidatePath('/');
+}
+
+export async function addCustomItem(appointmentId: number, name: string, slug: string) {
+  if (!name.trim()) return;
+  
+  await db.insert(appointmentItems).values({
+    appointmentId,
+    name: name.trim(),
+  });
+  
+  revalidatePath(`/f/${slug}`);
+}
+
+export async function removeCustomItem(itemId: number, slug: string) {
+  await db.delete(appointmentItems).where(eq(appointmentItems.id, itemId));
+  revalidatePath(`/f/${slug}`);
 }
 
 export async function updateAppointmentInfo(formData: FormData) {
@@ -167,7 +198,12 @@ export async function getAllAppointments(userId?: string) {
   return await db.query.appointments.findMany({
     where: eq(appointments.userId, userId),
     with: {
-      orders: true,
+      orders: {
+        with: {
+          items: true
+        }
+      },
+      items: true
     },
     orderBy: (appointments, { asc }) => [asc(appointments.date)],
   });
@@ -177,7 +213,12 @@ export async function getAppointmentBySlug(slug: string) {
   return await db.query.appointments.findFirst({
     where: eq(appointments.slug, slug),
     with: {
-      orders: true,
+      orders: {
+        with: {
+          items: true
+        }
+      },
+      items: true
     },
   });
 }
