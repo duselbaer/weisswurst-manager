@@ -5,7 +5,6 @@ import { useRef } from 'react';
 
 export default function AppointmentForm() {
   const formRef = useRef<HTMLFormElement>(null);
- // test
   return (
     <form
       ref={formRef}
