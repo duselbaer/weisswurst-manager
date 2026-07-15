@@ -1,6 +1,7 @@
 import { createAppointment, getAllAppointments } from './actions';
 import AppointmentOverview from '@/components/AppointmentOverview';
 import { auth } from '@/auth';
+import AdBanner from '@/components/AdBanner';
 
 export const dynamic = 'force-dynamic';
 
@@ -64,6 +65,7 @@ export default async function Home() {
                 <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 text-amber-800 text-sm italic mb-6">
                   Tipp: <a href="/register" className="font-bold underline">Registriere dich</a>, um deine Termine dauerhaft in einer Übersicht zu speichern!
                 </div>
+                <AdBanner className="mb-8" />
               </div>
             ) : (
               <>
@@ -74,12 +76,16 @@ export default async function Home() {
                   <AppointmentOverview appointments={appointments} serverNow={serverNow} type="future" />
                 </div>
 
+                <AdBanner type="small" className="my-6" />
+
                 <div>
                   <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-4">
                     📝 Deine offenen Abrechnungen
                   </h2>
                   <AppointmentOverview appointments={appointments} serverNow={serverNow} type="past" />
                 </div>
+
+                <AdBanner className="my-8" />
 
                 <div className="pt-8 border-t border-gray-200">
                   <h2 className="text-xl font-bold text-gray-500 flex items-center gap-3 mb-4">

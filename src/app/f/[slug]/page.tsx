@@ -4,6 +4,7 @@ import DeleteOrderButton from '@/components/DeleteOrderButton';
 import PriceEditor from '@/components/PriceEditor';
 import AppointmentInfoEditor from '@/components/AppointmentInfoEditor';
 import TogglePaidButton from '@/components/TogglePaidButton';
+import AdBanner from '@/components/AdBanner';
 import { Calendar, Clock, ShoppingCart, Users, ArrowLeft, Wallet } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -113,6 +114,9 @@ export default async function AppointmentPage({ params }: { params: Promise<{ sl
                 </div>
               </div>
             </div>
+            
+            <AdBanner type="vertical" className="hidden lg:flex" />
+            <AdBanner type="horizontal" className="lg:hidden" />
           </div>
 
           {/* Main: Participant List */}
