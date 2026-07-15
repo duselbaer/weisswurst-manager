@@ -1,10 +1,38 @@
 'use server';
 
 import { db } from '@/db';
-import { appointments, orders } from '@/db/schema';
+import { appointments, orders, users as usersTable } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { eq } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
+import { auth, signIn } from '@/auth';
+import bcrypt from 'bcryptjs';
+
+export async function registerUser(formData: FormData) {
+  const name = formData.get('name') as string;
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  if (!email || !password) return;
+
+  const existing = await db.query.users.findFirst({
+    where: eq(usersTable.email, email),
+  });
+
+  if (existing) return;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const id = Math.random().toString(36).substring(2, 15);
+
+  await db.insert(usersTable).values({
+    id,
+    name,
+    email,
+    password: hashedPassword,
+  });
+
+  await signIn('credentials', { email, password, redirectTo: '/' });
+}
 
 function slugify(text: string) {
   return text
@@ -19,6 +47,7 @@ function slugify(text: string) {
 }
 
 export async function createAppointment(formData: FormData) {
+  const session = await auth();
   const title = formData.get('title') as string;
   const date = formData.get('date') as string;
   
@@ -38,6 +67,7 @@ export async function createAppointment(formData: FormData) {
     title,
     date,
     slug,
+    userId: session?.user?.id || null,
   });
 
   redirect(`/f/${slug}`);
@@ -123,8 +153,11 @@ export async function updateAppointmentInfo(formData: FormData) {
   revalidatePath('/');
 }
 
-export async function getAllAppointments() {
+export async function getAllAppointments(userId?: string) {
+  if (!userId) return [];
+  
   return await db.query.appointments.findMany({
+    where: eq(appointments.userId, userId),
     with: {
       orders: true,
     },

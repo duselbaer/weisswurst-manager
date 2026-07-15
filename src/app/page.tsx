@@ -1,10 +1,12 @@
 import { createAppointment, getAllAppointments } from './actions';
 import AppointmentOverview from '@/components/AppointmentOverview';
+import { auth } from '@/auth';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const appointments = await getAllAppointments();
+  const session = await auth();
+  const appointments = session?.user?.id ? await getAllAppointments(session.user.id) : [];
   const serverNow = new Date().toISOString();
 
   return (
@@ -52,26 +54,41 @@ export default async function Home() {
           </section>
 
           <section className="lg:col-span-3 space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-4">
-                📅 Anstehende Termine
-              </h2>
-              <AppointmentOverview appointments={appointments} serverNow={serverNow} type="future" />
-            </div>
+            {!session ? (
+              <div className="bg-white p-8 rounded-2xl shadow-xl border-l-8 border-blue-600">
+                <h2 className="text-2xl font-black text-blue-900 mb-4">Servus! 🥨</h2>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Mit dem <strong>Weißwurst-Manager</strong> planst du das perfekte bayerische Frühstück. 
+                  Erstelle einen Termin, teile den Link und behalte den Überblick über alle Bestellungen.
+                </p>
+                <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 text-amber-800 text-sm italic mb-6">
+                  Tipp: <a href="/register" className="font-bold underline">Registriere dich</a>, um deine Termine dauerhaft in einer Übersicht zu speichern!
+                </div>
+              </div>
+            ) : (
+              <>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-4">
+                    📅 Deine anstehenden Termine
+                  </h2>
+                  <AppointmentOverview appointments={appointments} serverNow={serverNow} type="future" />
+                </div>
 
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-4">
-                📝 Offene Abrechnungen
-              </h2>
-              <AppointmentOverview appointments={appointments} serverNow={serverNow} type="past" />
-            </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-4">
+                    📝 Deine offenen Abrechnungen
+                  </h2>
+                  <AppointmentOverview appointments={appointments} serverNow={serverNow} type="past" />
+                </div>
 
-            <div className="pt-8 border-t border-gray-200">
-              <h2 className="text-xl font-bold text-gray-500 flex items-center gap-3 mb-4">
-                📦 Archiv (Erledigt)
-              </h2>
-              <AppointmentOverview appointments={appointments} serverNow={serverNow} type="done" />
-            </div>
+                <div className="pt-8 border-t border-gray-200">
+                  <h2 className="text-xl font-bold text-gray-500 flex items-center gap-3 mb-4">
+                    📦 Archiv (Erledigt)
+                  </h2>
+                  <AppointmentOverview appointments={appointments} serverNow={serverNow} type="done" />
+                </div>
+              </>
+            )}
             
             <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 text-blue-800">
               <h3 className="font-bold mb-2 flex items-center gap-2">
