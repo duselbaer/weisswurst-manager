@@ -5,7 +5,7 @@ import type { AdapterAccount } from 'next-auth/adapters';
 export const users = sqliteTable('user', {
   id: text('id').notNull().primaryKey(),
   name: text('name'),
-  email: text('email').notNull(),
+  email: text('email').notNull().unique(),
   password: text('password'),
   emailVerified: integer('emailVerified', { mode: 'timestamp_ms' }),
   image: text('image'),

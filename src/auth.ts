@@ -8,6 +8,8 @@ import { eq } from "drizzle-orm"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: DrizzleAdapter(db),
+  secret: process.env.AUTH_SECRET,
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {

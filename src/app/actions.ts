@@ -31,7 +31,15 @@ export async function registerUser(formData: FormData) {
     password: hashedPassword,
   });
 
-  await signIn('credentials', { email, password, redirectTo: '/' });
+  try {
+    await signIn('credentials', { email, password, redirectTo: '/' });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+      throw error;
+    }
+    // If it's not a redirect, it might be an auth error
+    return { error: 'Registrierung erfolgreich, aber Anmeldung fehlgeschlagen. Bitte manuell einloggen.' };
+  }
 }
 
 function slugify(text: string) {
