@@ -36,7 +36,7 @@ export default async function AppointmentPage({ params }: { params: Promise<{ sl
   const totalCostCents = itemTotals.reduce((acc, item) => acc + (item.totalCount * item.unitPriceCents), 0);
   
   const paidCents = appointment.orders.reduce((acc, order) => {
-    if (order.hasPaid === 0) return acc;
+    if (!order.hasPaid) return acc;
     const orderCost = order.items.reduce((sum, oi) => {
       const item = appointment.items.find(i => i.id === oi.itemId);
       return sum + (oi.count * (item?.unitPriceCents || 0));
@@ -140,7 +140,7 @@ export default async function AppointmentPage({ params }: { params: Promise<{ sl
                   return (
                     <div key={order.id} className={`bg-card p-4 rounded-xl shadow-sm border flex justify-between items-center hover:shadow-md transition-all ${order.hasPaid ? 'border-green-200 dark:border-green-900/30 bg-green-50/20 dark:bg-green-900/10' : 'border-border'}`}>
                       <div className="flex items-center gap-4">
-                        <TogglePaidButton id={order.id} hasPaid={order.hasPaid === 1} slug={slug} disabled={!pricesSet} />
+                        <TogglePaidButton id={order.id} hasPaid={order.hasPaid} slug={slug} disabled={!pricesSet} />
                         <div>
                           <span className={`font-bold text-lg ${order.hasPaid ? 'text-green-800 dark:text-green-400' : 'text-foreground'}`}>{order.userName}</span>
                           <div className="flex flex-wrap gap-2 mt-1">

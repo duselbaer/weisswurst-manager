@@ -1,7 +1,7 @@
 'use client';
 
 import { updateAppointmentInfo } from '@/app/actions';
-import { Appointment } from '@/db/schema';
+import { Appointment } from '@/db/types';
 import { Settings, Save } from 'lucide-react';
 import { useState } from 'react';
 

@@ -9,7 +9,7 @@ interface Appointment {
   title: string;
   date: string;
   slug: string;
-  isDone: number;
+  isDone: boolean;
   orders: { id: number }[];
 }
 
@@ -26,11 +26,11 @@ export default function AppointmentOverview({
   
   let filtered = appointments;
   if (type === 'future') {
-    filtered = appointments.filter(apt => apt.isDone === 0 && new Date(apt.date) >= now);
+    filtered = appointments.filter(apt => !apt.isDone && new Date(apt.date) >= now);
   } else if (type === 'past') {
-    filtered = appointments.filter(apt => apt.isDone === 0 && new Date(apt.date) < now);
+    filtered = appointments.filter(apt => !apt.isDone && new Date(apt.date) < now);
   } else if (type === 'done') {
-    filtered = appointments.filter(apt => apt.isDone === 1);
+    filtered = appointments.filter(apt => apt.isDone);
   }
 
   if (filtered.length === 0) {
@@ -59,7 +59,7 @@ export default function AppointmentOverview({
                 <div>
                   <h3 className="text-lg font-bold text-blue-900 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors flex items-center gap-2 text-foreground">
                     {apt.title}
-                    {apt.isDone === 1 && <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] px-2 py-0.5 rounded-full font-black uppercase">Erledigt</span>}
+                    {apt.isDone && <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] px-2 py-0.5 rounded-full font-black uppercase">Erledigt</span>}
                   </h3>
                   <div className="mt-2 space-y-1 text-xs text-gray-500 dark:text-gray-400">
                     <div className="flex items-center gap-2">

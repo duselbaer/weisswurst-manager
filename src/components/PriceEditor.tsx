@@ -1,7 +1,7 @@
 'use client';
 
 import { updateAppointmentPrices, removeCustomItem } from '@/app/actions';
-import { Appointment } from '@/db/schema';
+import { Appointment } from '@/db/types';
 import { Euro, Save, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 

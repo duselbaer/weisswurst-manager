@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String?
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  appointments  Appointment[]
+
+  @@map("user")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("account")
+}
+
+model Session {
+  sessionToken String   @id
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verificationToken")
+}
+
+model Appointment {
+  id     Int     @id @default(autoincrement())
+  userId String?
+  title  String
+  date   String
+  slug   String  @unique
+  isDone Boolean @default(false)
+
+  user   User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items  AppointmentItem[]
+  orders Order[]
+
+  @@map("appointments")
+}
+
+model AppointmentItem {
+  id             Int    @id @default(autoincrement())
+  appointmentId  Int
+  name           String
+  unitPriceCents Int    @default(0)
+
+  appointment  Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  orderEntries OrderItem[]
+
+  @@map("appointment_items")
+}
+
+model Order {
+  id            Int     @id @default(autoincrement())
+  appointmentId Int
+  userName      String
+  hasPaid       Boolean @default(false)
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  items       OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id      Int @id @default(autoincrement())
+  orderId Int
+  itemId  Int
+  count   Int @default(0)
+
+  order Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  item  AppointmentItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}

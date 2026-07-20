@@ -1,13 +1,11 @@
 import NextAuth from "next-auth"
-import { DrizzleAdapter } from "@auth/drizzle-adapter"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 import { db } from "./db"
 import Credentials from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
-import { users } from "./db/schema"
-import { eq } from "drizzle-orm"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: DrizzleAdapter(db),
+  adapter: PrismaAdapter(db),
   secret: process.env.AUTH_SECRET,
   trustHost: true,
   providers: [
@@ -18,9 +16,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
-        
-        const user = await db.query.users.findFirst({
-          where: eq(users.email, credentials.email as string)
+
+        const user = await db.user.findFirst({
+          where: { email: credentials.email as string }
         })
 
         if (!user || !user.password) return null

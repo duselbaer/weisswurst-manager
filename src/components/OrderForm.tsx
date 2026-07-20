@@ -1,7 +1,7 @@
 'use client';
 
 import { addOrder, addCustomItem } from '@/app/actions';
-import { Appointment } from '@/db/schema';
+import { Appointment } from '@/db/types';
 import { useRef, useState } from 'react';
 import { Plus } from 'lucide-react';
 
