@@ -6,7 +6,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Prisma ist ebenfalls nicht das Prisma, das du kennst
 
-Prisma 7 hat gegenüber älteren Versionen ebenfalls Breaking Changes: Konfiguration läuft über `prisma.config.ts` statt über `url`/`directUrl` im `datasource`-Block, der Client wird per Driver-Adapter (`@prisma/adapter-pg`) instanziiert statt implizit über die Connection-URL, und der generierte Client liegt unter `src/generated/prisma/client.ts` (Import über `@/generated/prisma/client`, kein Barrel-`index.ts`). Bei Unsicherheit die Skills in `.claude/skills/prisma-cli/` und `.claude/skills/prisma-client-api/` konsultieren, bevor auf Trainingsdaten-Wissen zurückgegriffen wird.
+Prisma 7 hat gegenüber älteren Versionen ebenfalls Breaking Changes: Konfiguration läuft über `prisma.config.ts` statt über `url`/`directUrl` im `datasource`-Block, der Client wird per Driver-Adapter (`@prisma/adapter-pg`) instanziiert statt implizit über die Connection-URL, und der generierte Client liegt unter `src/generated/prisma/client.ts` (Import über `@/generated/prisma/client`, kein Barrel-`index.ts`). Bei Unsicherheit die offizielle Prisma-7-Dokumentation konsultieren, bevor auf Trainingsdaten-Wissen zurückgegriffen wird.
 
 ## Projektüberblick
 
